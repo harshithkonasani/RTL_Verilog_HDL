@@ -1,52 +1,43 @@
 `timescale 1ns / 1ps
 
-module ALU #
+module alu #
 (
-    parameter data_width = 8,
-    parameter op_size = 4
+     parameter DATA_WIDTH = 8,
+     parameter ADDR_WIDTH = 4
 )
 (
-    input [data_width-1:0] a_in,
-    input [data_width-1:0] b_in,
-    input [op_size-1:0] opcode,
-    input clk, rst,
-    output [data_width-1:0] q_out,
-    output c_out
-    );
+     input [DATA_WIDTH-1:0]a_in_temp,
+     input [DATA_WIDTH-1:0]b_in_temp,
+     input [ADDR_WIDTH-1:0]opcode_temp,
     
-    reg [op_size-1:0] op_out;
-    reg [data_width:0] result;
-    
-    //opcode register
-    always @(posedge clk, negedge rst)
-   begin
-        if(~rst)
-            op_out <= 0;
-        else
-            op_out <= opcode;
-  end
-  
-    always @(*)
-    begin
-        case(op_out)
-            4'b0000 : result = a_in;
-            4'b0001 : result = a_in + b_in;
-            4'b0010 : result = a_in + b_in + 1;
-            4'b0011 : result = a_in - b_in;
-            4'b0100 : result = a_in - b_in -1;
-            4'b0101 : result = a_in + 1;
-            4'b0110 : result = a_in - 1;
-            4'b0111 : result = b_in;
-            4'b1000 : result = a_in | b_in;
-            4'b1001 : result = a_in ^ b_in;
-            4'b1010 : result = a_in & b_in;
-            4'b1011 : result = ~a_in;
-          default : result = {data_width+1{1'b0}};
-         endcase
-   end
-   
-   assign q_out = result[data_width-1:0];
-   assign c_out = result[data_width];
-   
-endmodule
+     input clk, rst,
+     
+     output [DATA_WIDTH-1:0]data_out_temp,
+     output carry_out_temp
+);
 
+
+ reg [DATA_WIDTH:0]res_temp;
+
+ always@(*)
+ begin
+    case(opcode_temp)
+         4'b0000 : res_temp = a_in_temp;
+         4'b0001 : res_temp = a_in_temp + b_in_temp;
+         4'b0010 : res_temp = a_in_temp + b_in_temp + 1;
+         4'b0011 : res_temp = a_in_temp - b_in_temp;
+         4'b0100 : res_temp = a_in_temp - b_in_temp - 1;
+         4'b0101 : res_temp = a_in_temp + 1;
+         4'b0110 : res_temp = a_in_temp - 1;
+         4'b0111 : res_temp = b_in_temp;
+        
+         4'b1000 : res_temp = a_in_temp | b_in_temp;
+         4'b1001 : res_temp = a_in_temp ^ b_in_temp;
+         4'b1010 : res_temp = a_in_temp & b_in_temp;
+         4'b1011 : res_temp = ~a_in_temp;
+         default : res_temp = 0;
+    endcase
+ end
+ 
+ assign {carry_out_temp,data_out_temp} = res_temp;
+endmodule
