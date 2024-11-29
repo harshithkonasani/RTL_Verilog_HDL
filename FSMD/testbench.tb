@@ -1,0 +1,33 @@
+`timescale 1ns / 1ps
+
+`define N 32
+module tb_moore_1110_fsmd();
+reg d_in;
+reg clk,rst;
+wire y_out;
+reg [`N-1:0] bit_in;
+wire [`N-1:0] bit_out;
+
+moore_1110_fsmd DUT (
+        .d_in(d_in),
+        .clk(clk),  .rst(rst),
+        .bit_in(bit_in),
+        .y_out(y_out),
+        .bit_out(bit_out)
+        );
+ 
+ 
+ always #10 clk = ~clk;
+ always #20 d_in = $random(); 
+ always #50 bit_in = $random();      
+  initial 
+  begin
+    clk= 0;
+    rst = 0;
+    d_in = 0;
+    bit_in = 0;
+  #10 rst =1;
+  
+  #1000 $finish();
+  end
+endmodule
