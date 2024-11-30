@@ -1,3 +1,5 @@
+//this ALU has registered inputs and registers outputs
+
 `timescale 1ns / 1ps
 
 module alu_4bit(
