@@ -12,7 +12,7 @@ table
         1       ?     1       :  1;
  endtable
  endprimitive
-module mux_4x1(
+module mux_8x1(
 output y1,
 input [7:0] a_in,
 input [2:0] sel_in
