@@ -1,12 +1,12 @@
 `timescale 1ns / 1ps
 
 
-module tb_mux_4x1();
-  reg [3:0] a_in;
-  reg [1:0] sel_in;
+module tb_mux_8x1();
+  reg [7:0] a_in;
+  reg [2:0] sel_in;
 wire y1;
 
-mux_4x1 DUT (.y1(y1),
+mux_8x1 DUT (.y1(y1),
              .a_in(a_in),
              .sel_in(sel_in));
     always #10 a_in = $random();
